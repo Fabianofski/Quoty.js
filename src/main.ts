@@ -4,7 +4,7 @@ import { onInteraction } from "./events/onInteraction";
 import { onReady } from "./events/onReady";
 import { onVoiceStateUpdate } from "./events/onVoiceStateUpdate";
 
-const { Client, Events, GatewayIntentBits } = require("discord.js");
+const { Client, Events } = require("discord.js");
 
 require("dotenv").config();
 const token = process.env.BOT_TOKEN;
