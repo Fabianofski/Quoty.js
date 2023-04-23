@@ -25,5 +25,5 @@ export const onReady = async (client: Client) => {
         await (<TextChannel>channel).send("Ready for Takeoff!");
     });
 
-  console.log("Discord ready!");
+  console.log(`Ready! Logged in as ${client.user?.tag}`);
 };

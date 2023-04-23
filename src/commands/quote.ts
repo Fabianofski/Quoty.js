@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Command } from "../interfaces/Command";
-import { CommandInteraction, TextChannel } from "discord.js";
+import { CommandInteraction, EmbedBuilder, TextChannel } from "discord.js";
 
 export const quoteCommand: Command = {
   data: new SlashCommandBuilder()
@@ -33,7 +33,21 @@ export const quoteCommand: Command = {
     const autoren = interaction.options.getString("autoren", true).split(",");
     const zitate = interaction.options.getString("zitate", true).split("|");
 
-    await channel.send(`${autoren[0]}: \"${zitate[0]}\"`);
+    const quoteEmbed = new EmbedBuilder()
+      .setColor(0x00ff00)
+      .setTitle(autoren[0])
+      .setAuthor({
+        name: interaction.user.username,
+        iconURL: interaction.user.avatarURL() || undefined,
+      })
+      .setDescription(zitate[0])
+      .setTimestamp();
+
+    for (let i = 1; i < autoren.length; i++) {
+      quoteEmbed.addFields({ name: autoren[i], value: zitate[i] });
+    }
+
+    await channel.send({ embeds: [quoteEmbed] });
 
     await interaction.reply({
       content: `Created new quote in <#${channel.id}>`,
