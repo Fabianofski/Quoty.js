@@ -1,21 +1,24 @@
-import { Channel, TextChannel } from "discord.js";
+import { Channel, Interaction, TextChannel } from "discord.js";
+import { validateEnv } from "./validateEnv";
+import { onInteraction } from "./events/onInteraction";
+import { onReady } from "./events/onReady";
 
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 
 require("dotenv").config();
-const token = process.env.TOKEN;
+const token = process.env.BOT_TOKEN;
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+(async () => {
+  if (!validateEnv()) return;
 
-client.once(Events.ClientReady, (c: typeof Client) => {
-  client.channels
-    .fetch("856556910303379496")
-    .then(async (channel: Channel | null) => {
-      if (channel && channel.isTextBased())
-        await (<TextChannel>channel).send("Ready for Takeoff!");
-    });
-});
+  const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.login(token).then(() => {
-  console.log("Logged in!");
-});
+  client.once(Events.ClientReady, onReady);
+
+  client.on(
+    "interactionCreate",
+    async (interaction: Interaction) => await onInteraction(interaction)
+  );
+
+  await client.login(token);
+})();
