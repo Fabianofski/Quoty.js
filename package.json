@@ -1,0 +1,21 @@
+{
+  "name": "quoty",
+  "version": "1.0.0",
+  "description": "Discord bot for writing quotes and tracking channel statistics",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "nodemon src/main.ts"
+  },
+  "author": "Fabian Friedrich",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.9.0",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.1"
+  }
+}
