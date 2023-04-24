@@ -1,7 +1,6 @@
-import { Interaction } from "discord.js";
-import { validateEnv } from "./utilities/validateEnv";
-import { onInteraction } from "./events/onInteraction";
+import { isDotEnvValid } from "./utilities/isDotEnvValid";
 import { onReady } from "./events/onReady";
+import { onInteraction } from "./events/onInteraction";
 import { onVoiceStateUpdate } from "./events/onVoiceStateUpdate";
 
 const { Client, Events } = require("discord.js");
@@ -10,7 +9,7 @@ require("dotenv").config();
 const token = process.env.BOT_TOKEN;
 
 (async () => {
-  if (!validateEnv()) return;
+  if (!isDotEnvValid()) return;
 
   const client = new Client({
     intents: 641,
@@ -18,10 +17,7 @@ const token = process.env.BOT_TOKEN;
 
   client.on(Events.ClientReady, onReady);
 
-  client.on(
-    Events.InteractionCreate,
-    async (interaction: Interaction) => await onInteraction(interaction)
-  );
+  client.on(Events.InteractionCreate, onInteraction);
 
   client.on(Events.VoiceStateUpdate, onVoiceStateUpdate);
 

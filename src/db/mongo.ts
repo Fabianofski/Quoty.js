@@ -1,3 +1,5 @@
+import moment, { Moment } from "moment";
+
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
@@ -13,7 +15,7 @@ export const addData = async (userID: string, state: string) => {
       {
         $set: {
           [state]: {
-            start: new Date(),
+            start: moment().toISOString(),
           },
         },
       },
@@ -29,7 +31,7 @@ export const addData = async (userID: string, state: string) => {
 export const getData = async (
   userID: string,
   state: string
-): Promise<Date | undefined> => {
+): Promise<Moment | undefined> => {
   try {
     const client = new MongoClient(uri);
 
