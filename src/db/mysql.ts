@@ -7,13 +7,32 @@ const con = mysql.createConnection({
   host: process.env.SQL_HOST,
   user: "root",
   password: process.env.SQL_PASSWORD,
-  database: "ChannelStatistics",
 });
 
 con.connect(function (err: any) {
   if (err) throw err;
-  console.log("Connected to mySQL database!");
+  con.query(`CREATE DATABASE IF NOT EXISTS ChannelStatistics;`, () => {
+    con.changeUser({ database: "ChannelStatistics" }, function (err: any) {
+      if (err) throw err;
+      console.log("Connected to mySQL 'ChannelStatistics' database!");
+      createTableIfNotExists("Voicetime");
+      createTableIfNotExists("Mutetime");
+      createTableIfNotExists("Deaftime");
+    });
+  });
 });
+
+const createTableIfNotExists = (tableName: string) => {
+  con.query(`
+  CREATE TABLE IF NOT EXISTS \`${tableName}\` (
+  \`UserName\` tinytext CHARACTER SET utf8mb4,
+  \`UserID\` tinytext CHARACTER SET utf8mb4, 
+  \`ServerName\` tinytext CHARACTER SET utf8mb4, 
+  \`ServerID\` tinytext CHARACTER SET utf8mb4, 
+  \`Start\` datetime DEFAULT NULL, 
+  \`End\` datetime DEFAULT NULL, 
+  \`Time\` time DEFAULT NULL)`);
+};
 
 export const getRankingList = (
   database: string,
