@@ -3,7 +3,10 @@ import moment, { Moment } from "moment";
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
-const uri = `mongodb://${process.env.MONGO_HOST}`;
+const uri =
+  process.env.NODE_ENV === "PRODUCTION"
+    ? `mongodb://${process.env.MONGO_AUTH}@${process.env.MONGO_HOST}`
+    : `mongodb://${process.env.MONGO_HOST}`;
 export const addData = async (userID: string, state: string) => {
   try {
     const client = new MongoClient(uri);

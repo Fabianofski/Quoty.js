@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    env_file: .env
+    command: [--auth]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+
+  mysql:
+    image: mysql:latest
+    restart: unless-stopped
+    ports:
+      - '3306:3306'
+    env_file: .env
+    environment:
+      MYSQL_DATABASE: 'ChannelStatistics'
+      MYSQL_ROOT_PASSWORD: ${SQL_PASSWORD}
+
+  bot:
+    build:
+      dockerfile: Dockerfile
+      context: "."
+    volumes:
+      - /app/node_modules
+      - .:/app
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - mongodb
+    environment:
+      SQL_HOST: "mysql"
+      MONGO_HOST: "mongodb:27017"
+      NODE_ENV: "PRODUCTION"

@@ -12,12 +12,20 @@ export const isDotEnvValid = () => {
     console.warn("Missing Mongo Host. Add MONGO_HOST to .env file.");
     valid = false;
   }
-  if (!process.env.SQL_HOST) {
-    console.warn("Missing SQL Host. Add SQL_HOST to .env file.");
+  if (!process.env.MONGO_PASSWORD) {
+    console.warn(
+      "Missing Mongo Password (Used in Production). Add MONGO_PASSWORD to .env file."
+    );
     valid = false;
   }
-  if (!process.env.SQL_User) {
-    console.warn("Missing SQL User. Add SQL_USER to .env file.");
+  if (!process.env.MONGO_AUTH) {
+    console.warn(
+      "Missing Mongo Auth (Used in Production). Add MONGO_AUTH to .env file."
+    );
+    valid = false;
+  }
+  if (!process.env.SQL_HOST) {
+    console.warn("Missing SQL Host. Add SQL_HOST to .env file.");
     valid = false;
   }
   if (!process.env.SQL_PASSWORD) {

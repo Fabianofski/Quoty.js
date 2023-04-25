@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const con = mysql.createConnection({
   host: process.env.SQL_HOST,
-  user: process.env.SQL_USER,
+  user: "root",
   password: process.env.SQL_PASSWORD,
   database: "ChannelStatistics",
 });
