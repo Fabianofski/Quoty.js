@@ -12,7 +12,7 @@ const con = mysql.createConnection({
 
 con.connect(function (err: any) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Connected to mySQL database!");
 });
 
 export const getRankingList = (
