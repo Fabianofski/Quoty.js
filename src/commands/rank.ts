@@ -22,7 +22,7 @@ export const rankCommand: Command = {
     if (!interaction.isChatInputCommand() || !interaction.guild) return;
 
     const type = interaction.options.getString("type", true);
-    getRankingList(type, "426358403917676546", async (result) => {
+    getRankingList(type, interaction.guild.id, async (result) => {
       const rankEmbed = new EmbedBuilder()
         .setColor(0x00ff00)
         .setTitle(type)
