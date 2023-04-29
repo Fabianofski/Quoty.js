@@ -1,20 +1,22 @@
 import moment, { Moment } from "moment";
+import * as process from "process";
 
-const mysql = require("mysql2");
+const mysql = require("mysql");
 require("dotenv").config();
 
 const con = mysql.createConnection({
   host: process.env.SQL_HOST,
-  user: "root",
+  user: process.env.SQL_USER,
   password: process.env.SQL_PASSWORD,
 });
+const database = process.env.SQL_DATABASE;
 
 con.connect(function (err: any) {
   if (err) throw err;
-  con.query(`CREATE DATABASE IF NOT EXISTS ChannelStatistics;`, () => {
-    con.changeUser({ database: "ChannelStatistics" }, function (err: any) {
+  con.query(`CREATE DATABASE IF NOT EXISTS ${database};`, () => {
+    con.changeUser({ database: database }, function (err: any) {
       if (err) throw err;
-      console.log("Connected to mySQL 'ChannelStatistics' database!");
+      console.log(`Connected to mySQL '${database}' database!`);
       createTableIfNotExists("Voicetime");
       createTableIfNotExists("Mutetime");
       createTableIfNotExists("Deaftime");
