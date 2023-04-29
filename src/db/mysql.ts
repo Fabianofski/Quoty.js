@@ -4,23 +4,25 @@ import * as process from "process";
 const mysql = require("mysql");
 require("dotenv").config();
 
-const con = mysql.createConnection({
+const database = process.env.SQL_DATABASE;
+const con = mysql.createPool({
   host: process.env.SQL_HOST,
   user: process.env.SQL_USER,
   password: process.env.SQL_PASSWORD,
+  database: database,
 });
-const database = process.env.SQL_DATABASE;
 
-con.connect(function (err: any) {
-  if (err) throw err;
-  con.query(`CREATE DATABASE IF NOT EXISTS ${database};`, () => {
-    con.changeUser({ database: database }, function (err: any) {
-      if (err) throw err;
-      console.log(`Connected to mySQL '${database}' database!`);
-      createTableIfNotExists("Voicetime");
-      createTableIfNotExists("Mutetime");
-      createTableIfNotExists("Deaftime");
-    });
+con.getConnection(function (err: any, conn: any) {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  conn.changeUser({ database: database }, function (err: any) {
+    if (err) throw err;
+    console.log(`Connected to mySQL '${database}' database!`);
+    createTableIfNotExists("Voicetime");
+    createTableIfNotExists("Mutetime");
+    createTableIfNotExists("Deaftime");
   });
 });
 
@@ -28,11 +30,11 @@ const createTableIfNotExists = (tableName: string) => {
   con.query(`
   CREATE TABLE IF NOT EXISTS \`${tableName}\` (
   \`UserName\` tinytext CHARACTER SET utf8mb4,
-  \`UserID\` tinytext CHARACTER SET utf8mb4, 
-  \`ServerName\` tinytext CHARACTER SET utf8mb4, 
-  \`ServerID\` tinytext CHARACTER SET utf8mb4, 
-  \`Start\` datetime DEFAULT NULL, 
-  \`End\` datetime DEFAULT NULL, 
+  \`UserID\` tinytext CHARACTER SET utf8mb4,
+  \`ServerName\` tinytext CHARACTER SET utf8mb4,
+  \`ServerID\` tinytext CHARACTER SET utf8mb4,
+  \`Start\` datetime DEFAULT NULL,
+  \`End\` datetime DEFAULT NULL,
   \`Time\` time DEFAULT NULL)`);
 };
 
