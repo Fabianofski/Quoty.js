@@ -4,7 +4,7 @@ import { CommandInteraction, EmbedBuilder, TextChannel } from "discord.js";
 
 export const quoteCommand: Command = {
   data: new SlashCommandBuilder()
-    .setName("quote")
+    .setName("zitat")
     .setDescription("Replies with pong.")
     .addChannelOption((option) =>
       option
