@@ -1,9 +1,19 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { Channel, Client, TextChannel } from "discord.js";
+import { ActivityType, Channel, Client, TextChannel } from "discord.js";
 import { CommandList } from "../commands/_CommandList";
 
 export const onReady = async (client: Client) => {
+  client.user?.setAvatar("./zitat.png");
+  client.user?.setPresence({
+    activities: [
+      {
+        type: ActivityType.Playing,
+        name: "https://quoty-bot.web.app/",
+      },
+    ],
+  });
+
   const rest = new REST({ version: "9" }).setToken(
     process.env.BOT_TOKEN as string
   );
