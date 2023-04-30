@@ -20,13 +20,13 @@ export const onReady = async (client: Client) => {
 
   const commandData = CommandList.map((command) => command.data.toJSON());
 
-  await rest.put(
-    Routes.applicationGuildCommands(
-      client.user?.id || "missing id",
-      process.env.GUILD_ID as string
-    ),
-    { body: commandData }
-  );
+  const guildIds = (<string>process.env.GUILD_ID).split(",");
+  for (const id of guildIds) {
+    await rest.put(
+      Routes.applicationGuildCommands(client.user?.id || "missing id", id),
+      { body: commandData }
+    );
+  }
 
   client.channels
     .fetch("856556910303379496")
